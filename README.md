@@ -16,3 +16,11 @@
 2) Перейти в раздел "Pages"
 3) В подгруппе "Branch" выбрать основную ветку и нажать "Save"
 4) Готово! Репозиторий выложится через минуту, и в том же разделе "Pages" будет ссылка
+
+https://pagespeed.web.dev/analysis/https-col3name-github-io-shri-preformance/ot8zcgb5o2?form_factor=mobile
+
+### Desktop pagespeed
+![desktop pagespeed](desktop.png)
+
+### Mobile pagespeed
+![mobile pagespeed](mobile.png)
