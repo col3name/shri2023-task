@@ -16,3 +16,5 @@
 2) Перейти в раздел "Pages"
 3) В подгруппе "Branch" выбрать основную ветку и нажать "Save"
 4) Готово! Репозиторий выложится через минуту, и в том же разделе "Pages" будет ссылка
+
+https://pagespeed-insights.herokuapp.com?url=https://col3name.github.io/shri2023-task/
