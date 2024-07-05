@@ -164,7 +164,10 @@ function Main() {
     const ref = React.useRef();
 
     const [activeTab, setActiveTab] = React.useState(getActiveTab());
-    const [hasRightScroll, setHasRightScroll] = React.useState(false);
+    const [hasRightScroll, setHasRightScroll] = React.useState(() => {
+        const ITEM_WIDTH_PX = 200;
+        return TABS[activeTab].items.length * ITEM_WIDTH_PX > window.innerWidth;
+    });
 
     const onSelectInput = event => {
         setActiveTab(event.target.value);
@@ -332,7 +335,7 @@ function Main() {
     </main>;
 }
 
-setTimeout(() => {
+document.addEventListener('DOMContentLoaded',() => {
     const root = ReactDOM.createRoot(document.getElementById('app'));
     root.render(
         <>
@@ -340,4 +343,4 @@ setTimeout(() => {
             <Main />
         </>
     );
-}, 100);
+});
