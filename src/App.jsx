@@ -1,6 +1,6 @@
 function Header() {
-    let [expanded, setExpanded] = React.useState(false);
-    let [toggled, setToggled] = React.useState(false);
+    const [expanded, setExpanded] = React.useState(false);
+    const [toggled, setToggled] = React.useState(false);
 
     const onClick = () => {
         if (!toggled) {
@@ -170,6 +170,7 @@ const TABS_KEYS = Object.keys(TABS);
 function Main() {
     const ref = React.useRef();
     const initedRef = React.useRef(false);
+
     const [activeTab, setActiveTab] = React.useState('');
     const [hasRightScroll, setHasRightScroll] = React.useState(false);
 
@@ -184,20 +185,20 @@ function Main() {
         setActiveTab(event.target.value);
     };
 
-    let sizes = [];
+
+    const sizesRef = React.useRef([]);
     const onSize = size => {
-        sizes = [...sizes, size];
+        sizesRef.current.push(size)
     };
 
     React.useEffect(() => {
-        const sumWidth = sizes.reduce((acc, item) => acc + item.width, 0);
-        const sumHeight = sizes.reduce((acc, item) => acc + item.height, 0);
+        const sumWidth = sizesRef.current.reduce((acc, item) => acc + item.width, 0);
 
         const newHasRightScroll = sumWidth > ref.current.offsetWidth;
         if (newHasRightScroll !== hasRightScroll) {
             setHasRightScroll(newHasRightScroll);
         }
-    });
+    }, [sizesRef.current]);
 
     const onArrowCLick = () => {
         const scroller = ref.current.querySelector('.section__panel:not(.section__panel_hidden)');
