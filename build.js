@@ -39,3 +39,8 @@ uglifyJs('vendors/react-with-dom.js', 'vendors/react-with-dom.min.js');
 uglifyJs('app.build.js', 'app.build.min.js');
 minify('styles.css', 'styles.min.css');
 
+const cssContent = fs.readFileSync('styles.min.css', {encoding:'utf-8'});
+const htmlContent = fs.readFileSync('template.html', {encoding:'utf-8'});
+fs.writeFileSync('index.tmp.html', htmlContent.replace('<!--style>%STYLE%</style>-->', `<style>${cssContent}</style>`));
+
+minify('index.tmp.html', 'index.html');
