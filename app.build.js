@@ -41,22 +41,7 @@ function Header() {
   }, "\u0421\u0446\u0435\u043D\u0430\u0440\u0438\u0438"))));
 }
 function Event(props) {
-  const ref = React.useRef();
-  const {
-    onSize
-  } = props;
-  React.useEffect(() => {
-    const width = ref.current.offsetWidth;
-    const height = ref.current.offsetHeight;
-    if (onSize) {
-      onSize({
-        width,
-        height
-      });
-    }
-  });
   return /*#__PURE__*/React.createElement("li", {
-    ref: ref,
     className: 'event' + (props.slim ? ' event_slim' : '')
   }, /*#__PURE__*/React.createElement("button", {
     className: "event__button"
@@ -178,34 +163,26 @@ const TABS = {
   }
 };
 for (let i = 0; i < 6; ++i) {
-  TABS.all.items = [...TABS.all.items, ...TABS.all.items];
+  TABS.all.items = TABS.all.items.concat(TABS.all.items);
 }
 const TABS_KEYS = Object.keys(TABS);
+function getActiveTab() {
+  return new URLSearchParams(location.search).get('tab') || 'all';
+}
 function Main() {
   const ref = React.useRef();
-  const initedRef = React.useRef(false);
-  const [activeTab, setActiveTab] = React.useState('');
+  const [activeTab, setActiveTab] = React.useState(getActiveTab());
   const [hasRightScroll, setHasRightScroll] = React.useState(false);
-  React.useEffect(() => {
-    if (!activeTab && !initedRef.current) {
-      initedRef.current = true;
-      setActiveTab(new URLSearchParams(location.search).get('tab') || 'all');
-    }
-  });
   const onSelectInput = event => {
     setActiveTab(event.target.value);
   };
-  const sizesRef = React.useRef([]);
-  const onSize = size => {
-    sizesRef.current.push(size);
-  };
   React.useEffect(() => {
-    const sumWidth = sizesRef.current.reduce((acc, item) => acc + item.width, 0);
-    const newHasRightScroll = sumWidth > ref.current.offsetWidth;
+    const scroller = ref.current.querySelector('.section__panel_visible');
+    const newHasRightScroll = scroller?.scrollWidth > ref.current.offsetWidth;
     if (newHasRightScroll !== hasRightScroll) {
       setHasRightScroll(newHasRightScroll);
     }
-  }, [sizesRef.current]);
+  }, []);
   const onArrowCLick = () => {
     const scroller = ref.current.querySelector('.section__panel:not(.section__panel_hidden)');
     if (scroller) {
@@ -331,7 +308,7 @@ function Main() {
   }, TABS_KEYS.map(key => /*#__PURE__*/React.createElement("div", {
     key: key,
     role: "tabpanel",
-    className: 'section__panel' + (key === activeTab ? '' : ' section__panel_hidden'),
+    className: 'section__panel' + (key === activeTab ? ' section__panel_visible' : ' section__panel_hidden'),
     "aria-hidden": key === activeTab ? 'false' : 'true',
     id: `panel_${key}`,
     "aria-labelledby": `tab_${key}`
@@ -339,9 +316,7 @@ function Main() {
     className: "section__panel-list"
   }, TABS[key].items.map((item, index) => /*#__PURE__*/React.createElement(Event, _extends({
     key: index
-  }, item, {
-    onSize: onSize
-  })))))), hasRightScroll && /*#__PURE__*/React.createElement("div", {
+  }, item)))))), hasRightScroll && /*#__PURE__*/React.createElement("div", {
     className: "section__arrow",
     onClick: onArrowCLick
   }))));
